@@ -17,7 +17,7 @@ type Db struct {
 }
 
 func New(ctx context.Context) (*Db, error) {
-	sql, err := sql.Open(sqliteshim.ShimName, "veles.db")
+	sql, err := sql.Open(sqliteshim.ShimName, "file:veles.db")
 	if err != nil {
 		return nil, fmt.Errorf("Failed to open database: %w", err)
 	}
@@ -32,5 +32,13 @@ func New(ctx context.Context) (*Db, error) {
 }
 
 func createTables(ctx context.Context, db *bun.DB) error {
-	panic("createTables not implemented")
+	if _, err := db.NewCreateTable().Model((*Habit)(nil)).IfNotExists().Exec(ctx); err != nil {
+		return fmt.Errorf("Couldn't create habits table: %w", err)
+	}
+
+	if _, err := db.NewCreateTable().Model((*Entry)(nil)).IfNotExists().Exec(ctx); err != nil {
+		return fmt.Errorf("Couldn't create entries table: %w", err)
+	}
+
+	return nil
 }
