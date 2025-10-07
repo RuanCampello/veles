@@ -16,13 +16,6 @@ type Db struct {
 	ctx context.Context
 }
 
-type Habit struct {
-	bun.BaseModel `bun:"table:habits"`
-
-	Id   int64  `bun:"id, pk, autoincrement"`
-	Name string `bun:"name, notnull, unique"`
-}
-
 func New(ctx context.Context) (*Db, error) {
 	sql, err := sql.Open(sqliteshim.ShimName, "veles.db")
 	if err != nil {
