@@ -8,6 +8,7 @@ import (
 
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/sqlitedialect"
+	"github.com/uptrace/bun/driver/sqliteshim"
 )
 
 type Db struct {
@@ -23,7 +24,7 @@ type Habit struct {
 }
 
 func New(ctx context.Context) (*Db, error) {
-	sql, err := sql.Open("sqlite", "veles.db")
+	sql, err := sql.Open(sqliteshim.ShimName, "veles.db")
 	if err != nil {
 		return nil, fmt.Errorf("Failed to open database: %w", err)
 	}
