@@ -16,7 +16,7 @@ type Db struct {
 	ctx context.Context
 }
 
-func New(ctx context.Context) (*Db, error) {
+func NewDb(ctx context.Context) (*Db, error) {
 	sql, err := sql.Open(sqliteshim.ShimName, "file:veles.db")
 	if err != nil {
 		return nil, fmt.Errorf("Failed to open database: %w", err)

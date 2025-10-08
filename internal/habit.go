@@ -18,13 +18,13 @@ type Habit struct {
 	Entries     []*Entry  `bun:"rel:has-many,join:id=habit_id"`
 }
 
-func CreateHabit(ctx context.Context, db *Db, name, description string) (*Habit, error) {
+func (db *Db) CreateHabit(ctx context.Context, name, description string) (*Habit, error) {
 	habit := &Habit{
 		Name:        name,
 		Description: description,
 	}
 
-	if _, err := db.NewInsert().Model(&habit).Exec(ctx); err != nil {
+	if _, err := db.NewInsert().Model(habit).Exec(ctx); err != nil {
 		return nil, fmt.Errorf("Failed to create habit: %w", err)
 	}
 
