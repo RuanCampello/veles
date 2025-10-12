@@ -11,4 +11,5 @@ var HabitCmd = &cobra.Command{
 
 func init() {
 	HabitCmd.AddCommand(AddCmd)
+	HabitCmd.AddCommand(ListCmd)
 }

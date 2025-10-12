@@ -3,7 +3,6 @@ package habit
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"github.com/ruancampello/veles/internal"
 	"github.com/spf13/cobra"
@@ -18,10 +17,7 @@ var AddCmd = &cobra.Command{
 		description, _ := cmd.Flags().GetString("description")
 
 		ctx := context.Background()
-		db, err := internal.NewDb(ctx)
-		if err != nil {
-			log.Fatalf("Couldn't connect to the database: %v\n", err)
-		}
+		db := internal.NewDb(ctx)
 		defer db.Close()
 
 		habit, err := db.CreateHabit(ctx, name, description)

@@ -16,19 +16,19 @@ type Db struct {
 	ctx context.Context
 }
 
-func NewDb(ctx context.Context) (*Db, error) {
+func NewDb(ctx context.Context) *Db {
 	sql, err := sql.Open(sqliteshim.ShimName, "file:veles.db")
 	if err != nil {
-		return nil, fmt.Errorf("Failed to open database: %w", err)
+		log.Fatalf("Failed to open database: %v", err)
 	}
 
 	db := bun.NewDB(sql, sqlitedialect.New())
 	if err = createTables(ctx, db); err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
 
-	log.Println("database initialised successfully")
-	return &Db{db, ctx}, nil
+	// log.Println("database initialised successfully")
+	return &Db{db, ctx}
 }
 
 func createTables(ctx context.Context, db *bun.DB) error {

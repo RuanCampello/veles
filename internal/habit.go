@@ -30,3 +30,9 @@ func (db *Db) CreateHabit(ctx context.Context, name, description string) (*Habit
 
 	return habit, nil
 }
+
+func (db *Db) ListHabits(ctx context.Context) ([]Habit, error) {
+	var habits []Habit
+	err := db.NewSelect().Model(&habits).Order("created_at DESC").Scan(ctx)
+	return habits, err
+}
