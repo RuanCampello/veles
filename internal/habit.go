@@ -36,3 +36,15 @@ func (db *Db) ListHabits(ctx context.Context) ([]Habit, error) {
 	err := db.NewSelect().Model(&habits).Order("created_at DESC").Scan(ctx)
 	return habits, err
 }
+
+func (db *Db) GetHabitById(ctx context.Context, id int64) (*Habit, error) {
+	habit := new(Habit)
+	err := db.NewSelect().Where("id = ?", id).Scan(ctx)
+	return habit, err
+}
+
+func (db *Db) GetHabitByName(ctx context.Context, name string) (*Habit, error) {
+	habit := new(Habit)
+	err := db.NewSelect().Where("name = ?", name).Scan(ctx)
+	return habit, err
+}

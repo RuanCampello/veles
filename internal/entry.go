@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"context"
+	"fmt"
 	"time"
 
 	"github.com/uptrace/bun"
@@ -18,10 +20,25 @@ type Entry struct {
 	Habit     *Habit    `bun:"rel:belongs-to,join:habit_id=id"`
 }
 
-type Status int
+type Status string
 
 const (
-	None Status = iota
-	Partial
-	Complete
+	None     Status = "none"
+	Partial  Status = "partial"
+	Complete Status = "complete"
 )
+
+func (db *Db) CreateEntry(ctx context.Context, habitId int64, progress Status, comment string) (*Entry, error) {
+	entry := &Entry{
+		HabitId: habitId,
+		Status:  progress,
+		Note:    comment,
+	}
+	// this should error cause we don't pass the date
+
+	if _, err := db.NewInsert().Model(entry).Exec(ctx); err != nil {
+		return nil, fmt.Errorf("failed to create new entry: %w", err)
+	}
+
+	return entry, nil
+}

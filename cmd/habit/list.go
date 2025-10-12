@@ -17,6 +17,7 @@ var ListCmd = &cobra.Command{
 
 		ctx := context.Background()
 		db := internal.NewDb(ctx)
+		defer db.Close()
 
 		habits, err := db.ListHabits(ctx)
 		if err != nil {
